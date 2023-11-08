@@ -526,17 +526,25 @@ var httpClient = class {
 };
 var ctx_default = (options) => {
   let env2 = env_default();
-  let config = DEFAULT_WEB_CONFIG;
+  let resolutions = [];
+  let webConfig = DEFAULT_WEB_CONFIG;
   try {
-    if (options.config)
-      config = JSON.parse(fs__default.default.readFileSync(options.config, "utf-8"));
+    if (options.config) {
+      webConfig = JSON.parse(fs__default.default.readFileSync(options.config, "utf-8"));
+    }
+    for (let resolution of webConfig.web.resolutions) {
+      resolutions.push({ width: resolution[0], height: resolution[1] });
+    }
   } catch (error) {
     throw new Error(error.message);
   }
   return {
     env: env2,
     client: new httpClient(env2),
-    config,
+    config: {
+      browsers: webConfig.web.browsers,
+      resolutions
+    },
     git: {
       branch: "",
       commitId: "",
@@ -585,7 +593,7 @@ var getGitInfo_default = (ctx) => {
     task: (ctx2, task) => __async(void 0, null, function* () {
       try {
         ctx2.git = git_default();
-        task.output = chalk3__default.default.gray(`branch: ${ctx2.git.branch}, commit: ${ctx2.git.commitId}, author ${ctx2.git.commitAuthor}`);
+        task.output = chalk3__default.default.gray(`branch: ${ctx2.git.branch}, commit: ${ctx2.git.commitId}, author: ${ctx2.git.commitAuthor}`);
         task.title = "Fetched git information";
       } catch (error) {
         console.error(error);

@@ -8,7 +8,10 @@ export interface Context {
     env: Env;
     server?: FastifyInstance<Server, IncomingMessage, ServerResponse>;
     client: httpClient;
-    config: WebConfigSchema;
+    config: {
+        browsers: Array<string>;
+        resolutions: Array<Record<string, number>>;
+    };
     staticConfig?: WebStaticConfigSchema;
     build: Build;
     git: Git;

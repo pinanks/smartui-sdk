@@ -71,20 +71,14 @@ async function postSnapshot(snapshotDOM, snapshotName) {
 async function smartuiSnapshot(driver, snapshotName) {
     try {
         let resp = await fetchDOM();
-        // console.log(resp);
         await driver.executeScript(resp.body.data.dom);
 
-        // Serialize and capture the DOM
-        /* istanbul ignore next: no instrumenting injected code */
         let { domSnapshot, url } = await driver.executeScript(options => ({
-        /* eslint-disable-next-line no-undef */
             domSnapshot: SmartUIDOM.serialize(options),
             url: document.URL
         }), {});
 
-        // writeFileSync('guidesly.html', domSnapshot);
-        let postResp = await postSnapshot(domSnapshot, snapshotName);
-        // console.log(`[smartui] Snapshot taken: ${snapshotName}`);
+        await postSnapshot(domSnapshot, snapshotName);
     } catch (error) {
         console.error(error)
     }

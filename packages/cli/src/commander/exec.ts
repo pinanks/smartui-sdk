@@ -51,8 +51,7 @@ command
         )
 
         try {
-            await tasks.run(ctx)
-            // await ctx.client.finalizeBuild(ctx.build.id);
+            await tasks.run(ctx);
         } catch (error) {
             // console.error(error);
             console.log('\nRefer docs: https://www.lambdatest.com/support/docs/smart-visual-regression-testing/')
